@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d1d">
+<title>Havona Studio</title>
+
+<style>
+:root {
+  --bg: #090d1d;
+  --panel: #121a30;
+  --panel2: #192541;
+  --gold: #e6c477;
+  --text: #f4f5fb;
+  --muted: #9ba8c4;
+  --green: #43d9a3;
+  --red: #ff667c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+header {
+  padding: 22px 17px;
+  background: linear-gradient(135deg, #17264b, #101426, #26183e);
+  border-bottom: 1px solid #35405d;
+}
+
+.brand {
+  color: var(--gold);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.status {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #172f34;
+  color: var(--green);
+  font-size: 11px;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  overflow-x: auto;
+  background: #0c1224;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+nav button {
+  flex-shrink: 0;
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid #283654;
+  border-radius: 9px;
+  padding: 11px 13px;
+}
+
+nav button.active {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+main {
+  max-width: 760px;
+  margin: auto;
+  padding: 16px;
+  padding-bottom: 50px;
+}
+
+h2 {
+  font-size: 21px;
+  margin-top: 8px;
+}
+
+h3 {
+  font-size: 15px;
+  margin-top: 0;
+}
+
+p, .muted {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid #263451;
+  border-radius: 15px;
+  padding: 16px;
+  margin: 14px 0;
+}
+
+.hero {
+  background: linear-gradient(135deg, #192a4b, #17162d);
+  border-color: #344364;
+}
+
+.big-time {
+  font-size: 37px;
+  font-weight: bold;
+  text-align: center;
+  color: var(--gold);
+  margin: 18px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.meter {
+  height: 8px;
+  background: #26324b;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.meter-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #43d9a3, #e6c477, #ff667c);
+  transition: width .1s;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  align-items: center;
+}
+
+button, .file-label {
+  cursor: pointer;
+  font: inherit;
+}
+
+.btn {
+  background: var(--panel2);
+  color: var(--text);
+  border: 1px solid #354464;
+  border-radius: 10px;
+  padding: 12px 15px;
+}
+
+.btn.primary {
+  background: var(--gold);
+  color: #11172a;
+  border-color: var(--gold);
+  font-weight: bold;
+}
+
+.btn.record {
+  background: #451c31;
+  color: #ff9caf;
+  border-color: #883b54;
+}
+
+.btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.file-label {
+  display: inline-block;
+  background: var(--panel2);
+  color: var(--gold);
+  border: 1px solid #354464;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--gold);
+  margin: 12px 0;
+}
+
+label {
+  font-size: 13px;
+}
+
+.track {
+  padding: 13px;
+  margin: 10px 0;
+  border: 1px solid #2a3856;
+  background: #0e1629;
+  border-radius: 10px;
+}
+
+.track strong {
+  color: var(--gold);
+  font-size: 13px;
+}
+
+.track audio, audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.notice {
+  border-left: 3px solid var(--gold);
+  padding: 10px;
+  background: #171d30;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.hidden {
+  display: none !important;
+}
+
+footer {
+  color: #6e7b99;
+  text-align: center;
+  padding: 20px;
+  font-size: 11px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">◉ HAVONA STUDIO</div>
+  <div class="subtitle">YOUR MUSIC. YOUR SOUND. YOUR STUDIO.</div>
+  <div class="status" id="appStatus">● STUDIO READY</div>
+</header>
+
+<nav>
+  <button class="active" data-page="record">🎙 Record</button>
+  <button data-page="tracks">🎚 Tracks</button>
+  <button data-page="mix">🎛 Mix</button>
+  <button data-page="ai">🤖 AI Tools</button>
+  <button data-page="admin">🔐 Admin</button>
+</nav>
+
+<main>
+
+<section id="record" class="page">
+
+  <div class="card hero">
+    <h2>Recording Studio</h2>
+    <p>Record your voice and work with your instrumental.</p>
+
+    <div class="big-time" id="timer">00:00</div>
+
+    <div class="meter">
+      <div class="meter-fill" id="meterFill"></div>
+   
