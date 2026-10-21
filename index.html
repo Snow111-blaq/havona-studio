@@ -2,470 +2,139 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090d1d">
 <title>Havona Studio</title>
-
 <style>
-:root {
-  --bg:#090d1d;
-  --panel:#121a30;
-  --gold:#e6c477;
-  --text:#f5f4f0;
-  --muted:#aab4cc;
-  --line:#2b3859;
-  --green:#8ce0b0;
-}
-
-* { box-sizing:border-box; }
-
-html {
-  min-height:100%;
-  overflow-x:hidden;
-  overflow-y:scroll;
-  -webkit-overflow-scrolling:touch;
-}
-
-body {
-  margin:0;
-  min-height:100vh;
-  overflow-x:hidden;
-  background:radial-gradient(ellipse at top,#17264b 0%,var(--bg) 48%);
-  color:var(--text);
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-}
-
-header {
-  padding:24px 18px 14px;
-  max-width:850px;
-  margin:auto;
-}
-
-.brand {
-  color:var(--gold);
-  font-size:12px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  font-weight:800;
-}
-
-h1 {
-  margin:7px 0 5px;
-  font-size:clamp(27px,7vw,38px);
-}
-
-h2 { font-size:19px; margin:0 0 10px; }
-h3 { font-size:15px; }
-
-.subtitle,.muted {
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.5;
-}
-
-nav {
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding:10px 16px 14px;
-  max-width:850px;
-  margin:auto;
-}
-
-button {
-  font:inherit;
-  cursor:pointer;
-  border:0;
-  border-radius:12px;
-  padding:12px 14px;
-  font-weight:750;
-}
-
-nav button {
-  flex:0 0 auto;
-  border:1px solid var(--line);
-  background:#10172a;
-  color:var(--muted);
-}
-
-nav button.active {
-  background:var(--gold);
-  color:#171525;
-}
-
-main {
-  max-width:850px;
-  margin:0 auto;
-  padding:0 16px 42px;
-}
-
-.card {
-  background:linear-gradient(145deg,rgba(23,35,66,.96),rgba(15,21,39,.97));
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:18px;
-  margin-bottom:14px;
-  box-shadow:0 12px 28px #0002;
-}
-
-.row {
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  align-items:center;
-}
-
-.primary { background:var(--gold); color:#171525; }
-.secondary { background:#202d4c; color:var(--text); border:1px solid #35466d; }
-.danger { background:#4b202c; color:#ffdce1; border:1px solid #7a3342; }
-
-button:disabled {
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-.filelabel {
-  display:inline-block;
-  cursor:pointer;
-  background:#202d4c;
-  color:var(--text);
-  border:1px solid #35466d;
-  border-radius:12px;
-  padding:12px 14px;
-  font-weight:750;
-}
-
-input[type=file] { display:none; }
-
-input[type=range] {
-  width:100%;
-  accent-color:var(--gold);
-}
-
-select {
-  background:#202d4c;
-  color:var(--text);
-  border:1px solid #35466d;
-  border-radius:10px;
-  padding:11px;
-  font:inherit;
-}
-
-audio {
-  width:100%;
-  margin-top:10px;
-}
-
-.status {
-  border-radius:12px;
-  padding:11px 12px;
-  background:#0c1325;
-  border:1px solid var(--line);
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.5;
-  margin-top:12px;
-  overflow-wrap:anywhere;
-}
-
-.status.good { color:var(--green); }
-.status.warn { color:#ffdda0; }
-
-.track {
-  padding:12px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  margin-top:10px;
-  background:#0c1325;
-}
-
-.labelrow {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-
-.badge {
-  display:inline-block;
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:5px 9px;
-  color:var(--muted);
-  font-size:11px;
-}
-
-.hidden { display:none!important; }
-
-footer {
-  color:var(--muted);
-  font-size:12px;
-  text-align:center;
-  padding:0 18px 28px;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#090d1d;color:#f5f4f0;font-family:Arial,sans-serif}
+header,main{max-width:800px;margin:auto;padding:20px}
+header{background:linear-gradient(130deg,#17264b,#101426,#26183e)}
+h1{color:#e6c477;margin-bottom:5px}
+h2{font-size:19px}
+p{color:#aab4cc;line-height:1.5;font-size:14px}
+.card{background:#121a30;border:1px solid #2b3859;border-radius:16px;padding:17px;margin-bottom:15px}
+button,.filebtn,select{border:0;border-radius:10px;padding:13px;margin:4px 2px;font-weight:bold;font-size:14px}
+button,.filebtn{cursor:pointer}
+.primary,.filebtn{background:#e6c477;color:#171525}
+.secondary{background:#263654;color:white}
+.danger{background:#652b39;color:white}
+button:disabled{opacity:.45}
+input[type=file]{display:none}
+audio{width:100%;margin-top:12px}
+input[type=range]{width:100%;accent-color:#e6c477}
+.status{padding:12px;background:#090d1d;border:1px solid #2b3859;border-radius:10px;font-size:13px;line-height:1.5;margin-top:10px;overflow-wrap:anywhere}
+.track{background:#090d1d;border:1px solid #2b3859;border-radius:12px;padding:12px;margin-top:12px}
+.badge{font-size:11px;color:#e6c477}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 16px}
+.tabs button{background:#172342;color:white;flex-shrink:0}
+.tabs button.active{background:#e6c477;color:#171525}
+.hidden{display:none!important}
 </style>
 </head>
-
 <body>
 
 <header>
-  <div class="brand">Your personal music workspace</div>
-  <h1>Havona Studio</h1>
-  <p class="subtitle">Record vocals • Play beats • Mix your music</p>
+<div style="color:#e6c477;font-size:12px;letter-spacing:3px">YOUR PERSONAL MUSIC STUDIO</div>
+<h1>Havona Studio</h1>
+<p>Record vocals • Mix beats • Download your music</p>
 </header>
 
-<nav aria-label="Studio sections">
-  <button class="active" data-tab="record">🎙️ Record</button>
-  <button data-tab="tracks">🎚️ Tracks</button>
-  <button data-tab="mix">🎛️ Mix</button>
-  <button data-tab="about">ℹ️ About</button>
-</nav>
+<div class="tabs">
+<button class="active" data-tab="record">🎙️ Record</button>
+<button data-tab="tracks">🎚️ Tracks</button>
+<button data-tab="mix">🎛️ Mix</button>
+</div>
 
 <main>
-
 <section id="record" class="tab">
 
-  <div class="card">
-    <h2>1. Your instrumental</h2>
-    <p class="muted">torGain').addEventListener('input', () => {
-  const value = Number($('monitorGain').value);
-  $('gainText').textContent = value + '%';
-  if (monitorGainNode && monitorContext) {
-    monitorGainNode.gain.setTargetAtTime(value / 100, monitorContext.currentTime, 0.015);
-  }
+<div class="card">
+<h2>1. Upload your instrumental</h2>
+<label class="filebtn" for="beatFile">Choose Instrumental</label>
+<input id="beatFile" type="file" accept="audio/*">
+<p id="beatName">No instrumental selected.</p>
+<audio id="beatPlayer" controls></audio>
+</div>
+
+<div class="card">
+<h2>2. Record vocals + beat</h2>
+<p>Connect headphones before recording. Press Record to start the beat from the beginning and capture both sounds together.</p>
+
+<label for="vocalType">Vocal type:</label>
+<select id="vocalType">
+<option>Lead Vocal</option>
+<option>Backing Vocal</option>
+</select>
+
+<div style="margin-top:12px">
+<button id="micBtn" class="secondary">Enable Microphone</button>
+<button id="recordBtn" class="primary" disabled>● Record</button>
+<button id="stopBtn" class="danger" disabled>■ Stop</button>
+</div>
+
+<div id="status" class="status">Upload a beat and enable your microphone.</div>
+</div>
+
+<div class="card">
+<h2>3. Live microphone monitoring</h2>
+<button id="monitorBtn" class="secondary" disabled>Turn Monitoring On</button>
+<p>Monitoring volume: <strong id="gainText">35%</strong></p>
+<input id="monitorGain" type="range" min="0" max="100" value="35">
+<div id="monitorStatus" class="status">Monitoring is off. Use headphones.</div>
+</div>
+
+</section>
+
+<section id="tracks" class="tab hidden">
+<div class="card">
+<h2>Your recordings</h2>
+<div id="recordings">Your recordings will appear here.</div>
+</div>
+</section>
+
+<section id="mix" class="tab hidden">
+<div class="card">
+<h2>Havona Mixing Workspace</h2>
+<p>The current version records the beat and vocals together. EQ, compression, reverb, delay, and reference-mix cloning are future upgrades.</p>
+</div>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+
+let micStream=null;
+let audioCtx=null;
+let beatSource=null;
+let micSource=null;
+let beatGain=null;
+let vocalGain=null;
+let monitorGain=null;
+let destination=null;
+let recorder=null;
+let vocalRecorder=null;
+let mixChunks=[];
+let vocalChunks=[];
+let recordings=[];
+let beatURL=null;
+let monitoring=false;
+let recording=false;
+let busy=false;
+let count=0;
+
+document.querySelectorAll('[data-tab]').forEach(button=>{
+button.addEventListener('click',()=>{
+document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b===button));
+document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!==button.dataset.tab));
+});
 });
 
-$('monitorBtn').addEventListener('click', async () => {
-  if (!micStream) return;
-  if (monitorOn) {
-    stopMonitoring();
-    return;
-  }
-  try {
-    monitorContext = new (window.AudioContext || window.webkitAudioContext)({latencyHint:'interactive'});
-    if (monitorContext.state === 'suspended') await monitorContext.resume();
-    monitorSource = monitorContext.createMediaStreamSource(micStream);
-    monitorGainNode = monitorContext.createGain();
-    monitorGainNode.gain.value = Number($('monitorGain').value) / 100;
-    monitorSource.connect(monitorGainNode);
-    monitorGainNode.connect(monitorContext.destination);
-    monitorOn = true;
-    $('monitorBtn').textContent = 'Turn monitoring off';
-    $('monitorBadge').textContent = 'ON';
-    $('monitorBadge').style.color = 'var(--green)';
-    $('monitorStatus').textContent = 'Monitoring is on. If you hear feedback or loud echo, turn it off and use headphones.';
-    $('monitorStatus').className = 'status good';
-  } catch (err) {
-    stopMonitoring();
-    $('monitorStatus').textContent = 'Could not start monitoring: ' + (err.message || 'Audio output unavailable.');
-    $('monitorStatus').className = 'status warn';
-  }
-});
-
-function stopMonitoring() {
-  monitorOn = false;
-  try { if (monitorSource) monitorSource.disconnect(); } catch(e) {}
-  try { if (monitorGainNode) monitorGainNode.disconnect(); } catch(e) {}
-  if (monitorContext) monitorContext.close().catch(()=>{});
-  monitorContext = null;
-  monitorSource = null;
-  monitorGainNode = null;
-  $('monitorBtn').textContent = 'Turn monitoring on';
-  $('monitorBadge').textContent = 'OFF';
-  $('monitorBadge').style.color = '';
-  $('monitorStatus').textContent = 'Monitoring is off. Use headphones before turning it on.';
-  $('monitorStatus').className = 'status warn';
+function message(text,warning=false){
+$('status').textContent=text;
+$('status').style.color=warning?'#ffce85':'#f5f4f0';
 }
 
-$('recordBtn').addEventListener('click', async () => {
-  if (!micStream) return;
-  if (mediaRecorder && mediaRecorder.state === 'recording') return;
-
-  chunks = [];
-  currentRecordingType = $('vocalType').value;
-
-  try {
-    const options = {};
-    if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-      options.mimeType = 'audio/webm;codecs=opus';
-    }
-
-    mediaRecorder = new MediaRecorder(micStream, options);
-    mediaRecorder.ondataavailable = event => {
-      if (event.data && event.data.size) chunks.push(event.data);
-    };
-    mediaRecorder.onstop = saveTake;
-    mediaRecorder.start();
-
-    $('recordBtn').disabled = true;
-    $('stopBtn').disabled = false;
-    $('recordStatus').textContent = 'Recording ' + currentRecordingType + '. The instrumental is not mixed into the saved vocal file yet.';
-    $('recordStatus').className = 'status warn';
-  } catch (err) {
-    $('recordStatus').textContent = 'Recording error: ' + (err.message || 'Could not start recording.');
-    $('recordStatus').className = 'status warn';
-  }
-});
-
-$('stopBtn').addEventListener('click', () => {
-  if (mediaRecorder && mediaRecorder.state === 'recording') {
-    mediaRecorder.stop();
-  }
-  $('stopBtn').disabled = true;
-  $('recordBtn').disabled = !micStream;
-});
-
-function saveTake() {
-  if (!chunks.length) {
-    $('recordStatus').textContent = 'No audio data was captured. Please try again.';
-    $('recordStatus').className = 'status warn';
-    return;
-  }
-
-  const blob = new Blob(chunks, {type:mediaRecorder.mimeType || 'audio/webm'});
-  const url = URL.createObjectURL(blob);
-  takeCount++;
-
-  const take = {
-    name: currentRecordingType + ' ' + takeCount,
-    type: currentRecordingType,
-    blob,
-    url
-  };
-
-  recordings.unshift(take);
-  renderRecordings();
-  $('recordStatus').textContent = take.name + ' saved in this page. Download it to keep a copy.';
-  $('recordStatus').className = 'status good';
-}
-
-function renderRecordings() {
-  const markup = recordings.map((take, index) => {
-    const filename = take.type.toLowerCase().replace(/\s+/g, '-') + '-' + (recordings.length - index) + '.webm';
-    return `<div class="track">
-      <div class="labelrow">
-        <strong>${take.name}</strong>
-        <span class="badge">${take.type}</span>
-      </div>
-      <audio controls preload="metadata" src="${take.url}"></audio>
-      <div class="row">
-        <a class="filelabel" href="${take.url}" download="${filename}">Download ${take.type}</a>
-      </div>
-    </div>`;
-  }).join('');
-
-  $('recordings').innerHTML = markup || '<p class="muted">No recordings yet.</p>';
-  $('trackList').innerHTML = markup || '<p class="muted">Your recordings will appear here after you record.</p>';
-}
-
-window.addEventListener('beforeunload', () => {
-  if (micStream) micStream.getTracks().forEach(track => track.stop());
-  if (currentBeatURL) URL.revokeObjectURL(currentBeatURL);
-  recordings.forEach(take => URL.revokeObjectURL(take.url));
-});
-</script>
-</body>
-        </html>).textContent = value + '%';
-  if (monitorGainNode && monitorContext) {
-    monitorGainNode.gain.setTargetAtTime(value / 100, monitorContext.currentTime, 0.015);
-  }
-});
-
-$('monitorBtn').addEventListener('click', async () => {
-  if (!micStream) return;
-  if (monitorOn) {
-    stopMonitoring();
-    return;
-  }
-  try {
-    monitorContext = new (window.AudioContext || window.webkitAudioContext)({latencyHint:'interactive'});
-    if (monitorContext.state === 'suspended') await monitorContext.resume();
-    monitorSource = monitorContext.createMediaStreamSource(micStream);
-    monitorGainNode = monitorContext.createGain();
-    monitorGainNode.gain.value = Number($('monitorGain').value) / 100;
-    monitorSource.connect(monitorGainNode);
-    monitorGainNode.connect(monitorContext.destination);
-    monitorOn = true;
-    $('monitorBtn').textContent = 'Turn monitoring off';
-    $('monitorBadge').textContent = 'ON';
-    $('monitorBadge').style.color = 'var(--green)';
-    $('monitorStatus').textContent = 'Monitoring is on. If you hear feedback or a loud echo, turn it off and use headphones.';
-    $('monitorStatus').className = 'status good';
-  } catch (err) {
-    stopMonitoring();
-    $('monitorStatus').textContent = 'Could not start monitoring: ' + (err.message || 'Audio output unavailable.');
-    $('monitorStatus').className = 'status warn';
-  }
-});
-
-function stopMonitoring() {
-  monitorOn = false;
-  try { if (monitorSource) monitorSource.disconnect(); } catch(e) {}
-  try { if (monitorGainNode) monitorGainNode.disconnect(); } catch(e) {}
-  if (monitorContext) { monitorContext.close().catch(()=>{}); }
-  monitorContext = null; monitorSource = null; monitorGainNode = null;
-  $('monitorBtn').textContent = 'Turn monitoring on';
-  $('monitorBadge').textContent = 'OFF';
-  $('monitorBadge').style.color = '';
-  $('monitorStatus').textContent = 'Monitoring is off. Use headphones before turning it on.';
-  $('monitorStatus').className = 'status warn';
-}
-
-$('recordBtn').addEventListener('click', async () => {
-  if (!micStream) return;
-  if (mediaRecorder && mediaRecorder.state === 'recording') return;
-  chunks = [];
-  try {
-    const options = {};
-    if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) options.mimeType = 'audio/webm;codecs=opus';
-    mediaRecorder = new MediaRecorder(micStream, options);
-    mediaRecorder.ondataavailable = event => { if (event.data && event.data.size) chunks.push(event.data); };
-    mediaRecorder.onstop = saveTake;
-    mediaRecorder.start();
-    $('recordBtn').disabled = true;
-    $('stopBtn').disabled = false;
-    $('recordStatus').textContent = 'Recording your microphone. The beat is not automatically mixed into this vocal file.';
-    $('recordStatus').className = 'status warn';
-  } catch (err) {
-    $('recordStatus').textContent = 'Recording error: ' + (err.message || 'Could not start recording.');
-    $('recordStatus').className = 'status warn';
-  }
-});
-
-$('stopBtn').addEventListener('click', () => {
-  if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
-  $('stopBtn').disabled = true;
-  $('recordBtn').disabled = !micStream;
-});
-
-function saveTake() {
-  if (!chunks.length) {
-    $('recordStatus').textContent = 'No audio data was captured. Please try recording again.';
-    return;
-  }
-  const blob = new Blob(chunks, {type: mediaRecorder.mimeType || 'audio/webm'});
-  const url = URL.createObjectURL(blob);
-  takeCount++;
-  const take = {name:'Vocal Take ' + takeCount, blob, url};
-  recordings.unshift(take);
-  renderRecordings();
-  $('recordStatus').textContent = take.name + ' saved in this page. Download it to keep a copy.';
-  $('recordStatus').className = 'status good';
-}
-
-function renderRecordings() {
-  const markup = recordings.map((take, index) => {
-    return `<div class="track"><div class="labelrow"><strong>${take.name}</strong><span class="badge">Vocal take</span></div><audio controls preload="metadata" src="${take.url}"></audio><div class="row"><a class="filelabel" href="${take.url}" download="havona-vocal-take-${recordings.length-index}.webm">Download take</a></div></div>`;
-  }).join('');
-  $('recordings').innerHTML = markup || '<p class="muted">No recordings yet.</p>';
-  $('trackList').innerHTML = markup || '<p class="muted">Your recordings will appear here after you record.</p>';
-}
-
-window.addEventListener('beforeunload', () => {
-  if (micStream) micStream.getTracks().forEach(track => track.stop());
-  if (currentBeatURL) URL.revokeObjectURL(currentBeatURL);
-});
-</script>
-</body>
-</html>
+$('beatFile').addEventListener('change',()=>{
+const file=$('beatFile').files[0];
+if(!file
