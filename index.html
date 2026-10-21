@@ -40,4 +40,475 @@ select{background:#263654;color:white}
 <header>
 <div style="font-size:12px;letter-spacing:3px;color:#e6c477">YOUR PERSONAL MUSIC STUDIO</div>
 <h1>Havona Studio</h1>
-<p>Record vocals • Mix beats • Download your music
+<p>Record vocals • Mix beats • Download your music</p>
+</header>
+
+<div class="tabs">
+<button class="active" data-tab="record">🎙️ Record</button>
+<button data-tab="tracks">🎚️ Tracks</button>
+<button data-tab="mix">🎛️ Mix</button>
+<button data-tab="about">ℹ️ About</button>
+</div>
+
+<main>
+
+<section id="record" class="tab">
+
+<div class="card">
+<h2>1. Upload your instrumental</h2>
+<label class="filebtn" for="beatFile">Choose Instrumental</label>
+<input id="beatFile" type="file" accept="audio/*">
+<p id="beatName">No instrumental selected.</p>
+<audio id="beatPlayer" controls></audio>
+</div>
+
+<div class="card">
+<h2>2. Record vocals with your beat</h2>
+<p>Connect headphones. Press Record to start your instrumental from the beginning and record your voice and beat together.</p>
+
+<label for="vocalType">Vocal type:</label>
+<select id="vocalType">
+<option>Lead Vocal</option>
+<option>Backing Vocal</option>
+</select>
+
+<div style="margin-top:12px">
+<button id="micBtn" class="secondary">Enable Microphone</button>
+<button id="recordBtn" class="primary" disabled>● Record</button>
+<button id="stopBtn" class="danger" disabled>■ Stop</button>
+</div>
+
+<div id="status" class="status">Upload your beat and enable your microphone.</div>
+</div>
+
+<div class="card">
+<h2>3. Live microphone monitoring</h2>
+<button id="monitorBtn" class="secondary" disabled>Turn Monitoring On</button>
+<p>Monitoring volume: <strong id="gainText">35%</strong></p>
+<input id="monitorGain" type="range" min="0" max="100" value="35">
+<div id="monitorStatus" class="status">Monitoring is off. Use headphones.</div>
+</div>
+
+</section>
+
+<section id="tracks" class="tab hidden">
+<div class="card">
+<h2>Your recordings</h2>
+<div id="recordings">Your recordings will appear here.</div>
+</div>
+</section>
+
+<section id="mix" class="tab hidden">
+<div class="card">
+<h2>Mixing workspace</h2>
+<p>This version combines your instrumental and voice into one downloadable recording. EQ, compression, reverb, delay, and reference-mix cloning are future upgrades.</p>
+</div>
+</section>
+
+<section id="about" class="tab hidden">
+<div class="card">
+<h2>About Havona Studio</h2>
+<p>Your free, browser-based music recording workspace.</p>
+<p>Download your recordings before refreshing or closing the page. Recordings are stored temporarily in your browser.</p>
+</div>
+</section>
+
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let micStream = null;
+let audioCtx = null;
+let beatSource = null;
+let micSource = null;
+let beatGain = null;
+let vocalGain = null;
+let monitorGain = null;
+let destination = null;
+
+let mixRecorder = null;
+let vocalRecorder = null;
+let mixChunks = [];
+let vocalChunks = [];
+let recordings = [];
+
+let beatURL = null;
+let recording = false;
+let busy = false;
+let monitoring = false;
+let takeNumber = 0;
+let currentType = 'Lead Vocal';
+let activeMime = 'audio/webm';
+
+document.querySelectorAll('[data-tab]').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('[data-tab]').forEach(b =>
+      b.classList.toggle('active', b === button)
+    );
+
+    document.querySelectorAll('.tab').forEach(section =>
+      section.classList.toggle('hidden', section.id !== button.dataset.tab)
+    );
+  });
+});
+
+function showStatus(text, warning = false) {
+  $('status').textContent = text;
+  $('status').style.color = warning ? '#ffce85' : '#f5f4f0';
+}
+
+/*
+  Create one persistent audio graph.
+  The beat goes to the speakers AND the mix recorder.
+  The microphone goes to the mix recorder.
+  Monitoring is a separate path.
+*/
+
+async function setupAudio() {
+  if (!micStream) {
+    throw new Error('Enable the microphone first.');
+  }
+
+  if (!audioCtx) {
+    const AudioContextClass =
+      window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContextClass) {
+      throw new Error('Your browser does not support audio mixing.');
+    }
+
+    audioCtx = new AudioContextClass();
+
+    destination = audioCtx.createMediaStreamDestination();
+
+    beatGain = audioCtx.createGain();
+    vocalGain = audioCtx.createGain();
+    monitorGain = audioCtx.createGain();
+
+    beatGain.gain.value = 1;
+    vocalGain.gain.value = 1;
+    monitorGain.gain.value = 0;
+
+    beatSource = audioCtx.createMediaElementSource($('beatPlayer'));
+
+    micSource = audioCtx.createMediaStreamSource(micStream);
+
+    // Instrumental: audible playback plus combined recording.
+    beatSource.connect(beatGain);
+    beatGain.connect(audioCtx.destination);
+    beatGain.connect(destination);
+
+    // Vocal: combined recording.
+    micSource.connect(vocalGain);
+    vocalGain.connect(destination);
+
+    // Separate live monitoring path.
+    micSource.connect(monitorGain);
+    monitorGain.connect(audioCtx.destination);
+  }
+
+  if (audioCtx.state !== 'running') {
+    await audioCtx.resume();
+  }
+}
+
+$('beatFile').addEventListener('change', () => {
+  if (recording || busy) return;
+
+  const file = $('beatFile').files[0];
+  if (!file) return;
+
+  if (beatURL) URL.revokeObjectURL(beatURL);
+
+  beatURL = URL.createObjectURL(file);
+  $('beatPlayer').src = beatURL;
+  $('beatPlayer').load();
+
+  $('beatName').textContent = 'Selected: ' + file.name;
+
+  showStatus('Instrumental loaded. Enable your microphone.');
+});
+
+$('micBtn').addEventListener('click', async () => {
+  try {
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+      throw new Error(
+        'Open the published HTTPS website in Chrome to enable your microphone.'
+      );
+    }
+
+    micStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        noiseSuppression: false,
+        autoGainControl: false
+      }
+    });
+
+    $('micBtn').disabled = true;
+    $('micBtn').textContent = 'Microphone Enabled';
+
+    $('recordBtn').disabled = false;
+    $('monitorBtn').disabled = false;
+
+    showStatus('Microphone ready. Upload your beat and press Record.');
+
+  } catch (error) {
+    showStatus('Microphone error: ' + error.message, true);
+  }
+});
+
+$('monitorGain').addEventListener('input', () => {
+  const value = Number($('monitorGain').value);
+
+  $('gainText').textContent = value + '%';
+
+  if (monitorGain && audioCtx) {
+    monitorGain.gain.setTargetAtTime(
+      monitoring ? value / 100 : 0,
+      audioCtx.currentTime,
+      0.02
+    );
+  }
+});
+
+$('monitorBtn').addEventListener('click', async () => {
+  try {
+    await setupAudio();
+
+    monitoring = !monitoring;
+
+    monitorGain.gain.setTargetAtTime(
+      monitoring ? Number($('monitorGain').value) / 100 : 0,
+      audioCtx.currentTime,
+      0.02
+    );
+
+    $('monitorBtn').textContent = monitoring
+      ? 'Turn Monitoring Off'
+      : 'Turn Monitoring On';
+
+    $('monitorStatus').textContent = monitoring
+      ? 'Monitoring is on. Use headphones.'
+      : 'Monitoring is off.';
+
+  } catch (error) {
+    $('monitorStatus').textContent = error.message;
+  }
+});
+
+/*
+  IMPORTANT:
+  Call beatPlayer.play() immediately inside the user's button tap,
+  before awaiting anything. This helps mobile browsers honour playback.
+*/
+
+$('recordBtn').addEventListener('click', async () => {
+  if (recording || busy) return;
+
+  if (!$('beatFile').files.length) {
+    showStatus('Please upload an instrumental first.', true);
+    return;
+  }
+
+  if (!micStream) {
+    showStatus('Enable your microphone first.', true);
+    return;
+  }
+
+  busy = true;
+  $('recordBtn').disabled = true;
+
+  try {
+    $('beatPlayer').pause();
+    $('beatPlayer').currentTime = 0;
+
+    // Start the playback request directly from the button tap.
+    const playbackPromise = $('beatPlayer').play();
+
+    // Prepare audio routing at the same time.
+    const audioPromise = setupAudio();
+
+    await Promise.all([playbackPromise, audioPromise]);
+
+    if (!window.MediaRecorder) {
+      throw new Error('Your browser does not support audio recording.');
+    }
+
+    const formats = [
+      'audio/webm;codecs=opus',
+      'audio/webm',
+      'audio/mp4'
+    ];
+
+    activeMime = formats.find(format =>
+      MediaRecorder.isTypeSupported(format)
+    ) || '';
+
+    const options = activeMime ? { mimeType: activeMime } : {};
+
+    mixChunks = [];
+    vocalChunks = [];
+
+    currentType = $('vocalType').value;
+
+    // Recorder A: beat + voice.
+    mixRecorder = new MediaRecorder(destination.stream, options);
+
+    mixRecorder.ondataavailable = event => {
+      if (event.data && event.data.size) {
+        mixChunks.push(event.data);
+      }
+    };
+
+    mixRecorder.onstop = saveMix;
+
+    // Recorder B: voice only.
+    vocalRecorder = new MediaRecorder(micStream, options);
+
+    vocalRecorder.ondataavailable = event => {
+      if (event.data && event.data.size) {
+        vocalChunks.push(event.data);
+      }
+    };
+
+    vocalRecorder.onstop = saveVocal;
+
+    recording = true;
+
+    mixRecorder.start(250);
+    vocalRecorder.start(250);
+
+    $('stopBtn').disabled = false;
+
+    showStatus(
+      'RECORDING: Your beat is playing, and both beat and voice are being captured.'
+    );
+
+  } catch (error) {
+    $('beatPlayer').pause();
+
+    showStatus(
+      'Could not start recording: ' + error.message,
+      true
+    );
+
+    $('recordBtn').disabled = false;
+
+  } finally {
+    busy = false;
+  }
+});
+
+$('stopBtn').addEventListener('click', () => {
+  if (!recording) return;
+
+  recording = false;
+
+  $('stopBtn').disabled = true;
+  $('recordBtn').disabled = true;
+
+  $('beatPlayer').pause();
+
+  if (mixRecorder && mixRecorder.state === 'recording') {
+    mixRecorder.stop();
+  }
+
+  if (vocalRecorder && vocalRecorder.state === 'recording') {
+    vocalRecorder.stop();
+  }
+
+  showStatus('Saving your combined mix and vocal-only recording...');
+});
+
+function saveMix() {
+  if (!mixChunks.length) {
+    showStatus('The combined recording is empty. Please try again.', true);
+    return;
+  }
+
+  takeNumber++;
+
+  const blob = new Blob(mixChunks, {
+    type: mixRecorder.mimeType || activeMime || 'audio/webm'
+  });
+
+  addRecording(
+    'Combined Mix ' + takeNumber,
+    blob,
+    'combined-mix-' + takeNumber
+  );
+
+  showStatus(
+    'Combined mix saved! Play the downloaded mix to check both sounds.'
+  );
+
+  $('recordBtn').disabled = false;
+}
+
+function saveVocal() {
+  if (!vocalChunks.length) return;
+
+  const blob = new Blob(vocalChunks, {
+    type: vocalRecorder.mimeType || activeMime || 'audio/webm'
+  });
+
+  addRecording(
+    currentType + ' Only ' + takeNumber,
+    blob,
+    'vocal-only-' + takeNumber
+  );
+}
+
+function addRecording(name, blob, filename) {
+  const url = URL.createObjectURL(blob);
+
+  const extension = blob.type.includes('mp4') ? 'mp4' : 'webm';
+
+  recordings.unshift({
+    name,
+    url,
+    filename: filename + '.' + extension
+  });
+
+  renderRecordings();
+}
+
+function renderRecordings() {
+  const html = recordings.map(item => `
+    <div class="track">
+      <strong>${item.name}</strong>
+      <audio controls preload="metadata" src="${item.url}"></audio>
+      <p>
+        <a class="filebtn" href="${item.url}" download="${item.filename}">
+          Download ${item.name}
+        </a>
+      </p>
+    </div>
+  `).join('');
+
+  $('recordings').innerHTML =
+    html || 'Your recordings will appear here.';
+}
+
+window.addEventListener('beforeunload', () => {
+  if (micStream) {
+    micStream.getTracks().forEach(track => track.stop());
+  }
+
+  if (audioCtx) {
+    audioCtx.close();
+  }
+
+  if (beatURL) {
+    URL.revokeObjectURL(beatURL);
+  }
+
+  recordings.forEach(item => URL.revokeObjectURL(item.url));
+});
+</script>
+
+</body>
+  </html>
