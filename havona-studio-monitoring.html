@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090d1d">
+<title>Havona Studio</title>
+<style>
+:root{--bg:#090d1d;--panel:#121a30;--panel2:#172342;--gold:#e6c477;--text:#f5f4f0;--muted:#aab4cc;--line:#2b3859;--green:#8ce0b0;--red:#ff9292}
+*{box-sizing:border-box}
+html{min-height:100%;overflow-x:hidden;overflow-y:scroll;-webkit-overflow-scrolling:touch}
+body{margin:0;min-height:100vh;overflow-x:hidden;overflow-y:visible;touch-action:pan-y;background:radial-gradient(ellipse at top,#17264b 0%,var(--bg) 48%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{padding:24px 18px 14px;max-width:850px;margin:auto}
+.brand{color:var(--gold);font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:800}
+h1{margin:7px 0 5px;font-size:clamp(27px,7vw,38px);line-height:1.1}
+.subtitle{margin:0;color:var(--muted);font-size:14px}
+nav{display:flex;gap:8px;overflow-x:auto;padding:10px 16px 14px;max-width:850px;margin:auto}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:#10172a;color:var(--muted);border-radius:12px;padding:11px 15px;font-weight:700}
+nav button.active{background:var(--gold);color:#171525;border-color:var(--gold)}
+main{max-width:850px;margin:0 auto;padding:0 16px 42px}
+.card{background:linear-gradient(145deg,rgba(23,35,66,.96),rgba(15,21,39,.97));border:1px solid var(--line);border-radius:18px;padding:18px;margin:0 0 14px;box-shadow:0 12px 28px #0002}
+h2{font-size:19px;margin:0 0 8px}
+h3{font-size:15px;margin:0 0 9px}
+p{line-height:1.5}
+.muted{color:var(--muted);font-size:13px}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+button,.filelabel{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:12px 14px;font-weight:750}
+.primary{background:var(--gold);color:#171525}
+.secondary{background:#202d4c;color:var(--text);border:1px solid #35466d}
+.danger{background:#4b202c;color:#ffdce1;border:1px solid #7a3342}
+button:disabled{opacity:.45;cursor:not-allowed}
+.filelabel{display:inline-block;background:#202d4c;color:var(--text);border:1px solid #35466d}
+input[type=file]{display:none}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.status{border-radius:12px;padding:11px 12px;background:#0c1325;border:1px solid var(--line);color:var(--muted);font-size:13px;margin-top:12px}
+.status.good{color:var(--green)}
+.status.warn{color:#ffdda0}
+.track{padding:12px;border:1px solid var(--line);border-radius:12px;margin-top:10px;background:#0c1325}
+.track audio{width:100%;margin-top:8px}
+.labelrow{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.hidden{display:none!important}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:11px}
+hr{border:0;border-top:1px solid var(--line);margin:16px 0}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:0 18px 28px}
+@media(min-width:650px){.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid .card{margin-bottom:0}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Your personal music workspace</div>
+  <h1>Havona Studio</h1>
+  <p class="subtitle">Record vocals • Play beats • Monitor your voice</p>
+</header>
+<nav aria-label="Studio sections">
+  <button class="active" data-tab="record">🎙️ Record</button>
+  <button data-tab="tracks">🎚️ Tracks</button>
+  <button data-tab="mix">🎛️ Mix</button>
+  <button data-tab="about">ℹ️ About</button>
+</nav>
+<main>
+<section id="record" class="tab">
+  <div class="card">
+    <div class="labelrow"><h2>1. Your instrumental</h2><span class="badge">MP3 / WAV / audio</span></div>
+    <p class="muted">Choose a beat saved on your phone, then play it while recording your voice.</p>
+    <label class="filelabel" for="beatFile">Choose instrumental</label>
+    <input id="beatFile" type="file" accept="audio/*">
+    <div id="beatName" class="muted" style="margin-top:10px">No instrumental selected.</div>
+    <audio id="beatPlayer" controls class="hidden" style="width:100%;margin-top:12px"></audio>
+  </div>
+
+  <div class="card">
+    <h2>2. Vocal recording</h2>
+    <p class="muted">Allow microphone access when your browser asks. For best results, use wired headphones to avoid the beat leaking into your microphone.</p>
+    <div class="row">
+      <button id="micBtn" class="secondary">Enable microphone</button>
+      <button id="recordBtn" class="primary" disabled>● Record</button>
+      <button id="stopBtn" class="danger" disabled>■ Stop</button>
+    </div>
+    <div id="micStatus" class="status">Microphone is not enabled yet.</div>
+    <div id="recordStatus" class="status">Ready to record.</div>
+    <div id="recordings"></div>
+  </div>
+
+  <div class="card">
+    <h2>3. Live voice monitoring</h2>
+    <p class="muted">Turn this on to hear your microphone in your headphones in real time. It may have a small delay on some phones. Keep headphones connected and start with low volume.</p>
+    <div class="row">
+      <button id="monitorBtn" class="secondary" disabled>Turn monitoring on</button>
+      <span id="monitorBadge" class="badge">OFF</span>
+    </div>
+    <div style="margin-top:15px">
+      <div class="labelrow"><label for="monitorGain">Monitoring volume</label><strong id="gainText">35%</strong></div>
+      <input id="monitorGain" type="range" min="0" max="100" value="35">
+    </div>
+    <div id="monitorStatus" class="status warn">Monitoring is off. Use headphones before turning it on to prevent feedback.</div>
+  </div>
+</section>
+
+<section id="tracks" class="tab hidden">
+  <div class="card">
+    <h2>Track workspace</h2>
+    <p>Each recording appears below as a separate vocal take. You can listen to it or download it and later use it as a lead, backing vocal, harmony, or ad-lib.</p>
+    <p class="muted">Synchronized multitrack recording and separate track positioning are not implemented in this starter version yet.</p>
+    <div id="trackList"><p class="muted">Your recordings will appear here after you record.</p></div>
+  </div>
+</section>
+
+<section id="mix" class="tab hidden">
+  <div class="card">
+    <h2>Mixing tools</h2>
+    <p>These are planned controls for the next build.</p>
+    <div class="track"><h3>Vocal EQ</h3><p class="muted">High-pass filter, tone shaping and presence.</p><span class="badge">Coming next</span></div>
+    <div class="track"><h3>Compression</h3><p class="muted">Control vocal dynamics and even out levels.</p><span class="badge">Coming next</span></div>
+    <div class="track"><h3>Reverb and delay</h3><p class="muted">Add space and echo to the vocal.</p><span class="badge">Coming next</span></div>
+    <div class="track"><h3>Mix Clone / AI separation</h3><p class="muted">Reference-based mix matching and advanced stem separation are not available in this version.</p><span class="badge">Future feature</span></div>
+  </div>
+</section>
+
+<section id="about" class="tab hidden">
+  <div class="card">
+    <h2>About Havona Studio</h2>
+    <p>Havona Studio is a free, browser-based starter studio designed for your phone.</p>
+    <p class="muted">Recordings are created in your browser. Keep a copy of important takes using the Download button. Closing or refreshing the page may remove recordings that have not been downloaded.</p>
+    <p class="muted">Live monitoring depends on your phone and browser. Bluetooth headphones can add noticeable delay. Advanced effects and AI features still need to be built.</p>
+  </div>
+</section>
+</main>
+<footer>Havona Studio • Built step by step</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+let micStream = null;
+let mediaRecorder = null;
+let chunks = [];
+let takeCount = 0;
+let monitorContext = null;
+let monitorSource = null;
+let monitorGainNode = null;
+let monitorOn = false;
+let currentBeatURL = null;
+let recordings = [];
+
+document.querySelectorAll('nav button').forEach(button => {
+  button.addEventListener('click', () => {
+    document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b === button));
+    document.querySelectorAll('.tab').forEach(section => section.classList.toggle('hidden', section.id !== button.dataset.tab));
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+$('beatFile').addEventListener('change', () => {
+  const file = $('beatFile').files[0];
+  if (!file) return;
+  if (currentBeatURL) URL.revokeObjectURL(currentBeatURL);
+  currentBeatURL = URL.createObjectURL(file);
+  $('beatPlayer').src = currentBeatURL;
+  $('beatPlayer').classList.remove('hidden');
+  $('beatName').textContent = 'Selected: ' + file.name;
+});
+
+$('micBtn').addEventListener('click', async () => {
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error('This browser does not provide microphone access here. Open the published HTTPS site in Chrome.');
+    }
+    micStream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+    });
+    $('micStatus').textContent = 'Microphone is ready.';
+    $('micStatus').className = 'status good';
+    $('micBtn').textContent = 'Microphone enabled';
+    $('micBtn').disabled = true;
+    $('recordBtn').disabled = false;
+    $('monitorBtn').disabled = false;
+    $('monitorStatus').textContent = 'Ready. Connect headphones before turning monitoring on.';
+    $('monitorStatus').className = 'status warn';
+  } catch (err) {
+    $('micStatus').textContent = 'Microphone error: ' + (err.message || 'Permission was not granted.');
+    $('micStatus').className = 'status warn';
+  }
+});
+
+$('monitorGain').addEventListener('input', () => {
+  const value = Number($('monitorGain').value);
+  $('gainText').textContent = value + '%';
+  if (monitorGainNode && monitorContext) {
+    monitorGainNode.gain.setTargetAtTime(value / 100, monitorContext.currentTime, 0.015);
+  }
+});
+
+$('monitorBtn').addEventListener('click', async () => {
+  if (!micStream) return;
+  if (monitorOn) {
+    stopMonitoring();
+    return;
+  }
+  try {
+    monitorContext = new (window.AudioContext || window.webkitAudioContext)({latencyHint:'interactive'});
+    if (monitorContext.state === 'suspended') await monitorContext.resume();
+    monitorSource = monitorContext.createMediaStreamSource(micStream);
+    monitorGainNode = monitorContext.createGain();
+    monitorGainNode.gain.value = Number($('monitorGain').value) / 100;
+    monitorSource.connect(monitorGainNode);
+    monitorGainNode.connect(monitorContext.destination);
+    monitorOn = true;
+    $('monitorBtn').textContent = 'Turn monitoring off';
+    $('monitorBadge').textContent = 'ON';
+    $('monitorBadge').style.color = 'var(--green)';
+    $('monitorStatus').textContent = 'Monitoring is on. If you hear feedback or a loud echo, turn it off and use headphones.';
+    $('monitorStatus').className = 'status good';
+  } catch (err) {
+    stopMonitoring();
+    $('monitorStatus').textContent = 'Could not start monitoring: ' + (err.message || 'Audio output unavailable.');
+    $('monitorStatus').className = 'status warn';
+  }
+});
+
+function stopMonitoring() {
+  monitorOn = false;
+  try { if (monitorSource) monitorSource.disconnect(); } catch(e) {}
+  try { if (monitorGainNode) monitorGainNode.disconnect(); } catch(e) {}
+  if (monitorContext) { monitorContext.close().catch(()=>{}); }
+  monitorContext = null; monitorSource = null; monitorGainNode = null;
+  $('monitorBtn').textContent = 'Turn monitoring on';
+  $('monitorBadge').textContent = 'OFF';
+  $('monitorBadge').style.color = '';
+  $('monitorStatus').textContent = 'Monitoring is off. Use headphones before turning it on.';
+  $('monitorStatus').className = 'status warn';
+}
+
+$('recordBtn').addEventListener('click', async () => {
+  if (!micStream) return;
+  if (mediaRecorder && mediaRecorder.state === 'recording') return;
+  chunks = [];
+  try {
+    const options = {};
+    if (MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) options.mimeType = 'audio/webm;codecs=opus';
+    mediaRecorder = new MediaRecorder(micStream, options);
+    mediaRecorder.ondataavailable = event => { if (event.data && event.data.size) chunks.push(event.data); };
+    mediaRecorder.onstop = saveTake;
+    mediaRecorder.start();
+    $('recordBtn').disabled = true;
+    $('stopBtn').disabled = false;
+    $('recordStatus').textContent = 'Recording your microphone. The beat is not automatically mixed into this vocal file.';
+    $('recordStatus').className = 'status warn';
+  } catch (err) {
+    $('recordStatus').textContent = 'Recording error: ' + (err.message || 'Could not start recording.');
+    $('recordStatus').className = 'status warn';
+  }
+});
+
+$('stopBtn').addEventListener('click', () => {
+  if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+  $('stopBtn').disabled = true;
+  $('recordBtn').disabled = !micStream;
+});
+
+function saveTake() {
+  if (!chunks.length) {
+    $('recordStatus').textContent = 'No audio data was captured. Please try recording again.';
+    return;
+  }
+  const blob = new Blob(chunks, {type: mediaRecorder.mimeType || 'audio/webm'});
+  const url = URL.createObjectURL(blob);
+  takeCount++;
+  const take = {name:'Vocal Take ' + takeCount, blob, url};
+  recordings.unshift(take);
+  renderRecordings();
+  $('recordStatus').textContent = take.name + ' saved in this page. Download it to keep a copy.';
+  $('recordStatus').className = 'status good';
+}
+
+function renderRecordings() {
+  const markup = recordings.map((take, index) => {
+    return `<div class="track"><div class="labelrow"><strong>${take.name}</strong><span class="badge">Vocal take</span></div><audio controls preload="metadata" src="${take.url}"></audio><div class="row"><a class="filelabel" href="${take.url}" download="havona-vocal-take-${recordings.length-index}.webm">Download take</a></div></div>`;
+  }).join('');
+  $('recordings').innerHTML = markup || '<p class="muted">No recordings yet.</p>';
+  $('trackList').innerHTML = markup || '<p class="muted">Your recordings will appear here after you record.</p>';
+}
+
+window.addEventListener('beforeunload', () => {
+  if (micStream) micStream.getTracks().forEach(track => track.stop());
+  if (currentBeatURL) URL.revokeObjectURL(currentBeatURL);
+});
+</script>
+</body>
+</html>
