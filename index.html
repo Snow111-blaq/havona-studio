@@ -2,275 +2,74 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#090d1d">
 <title>Havona Studio</title>
-
 <style>
-:root {
-  --bg: #090d1d;
-  --panel: #121a30;
-  --panel2: #192541;
-  --gold: #e6c477;
-  --text: #f4f5fb;
-  --muted: #9ba8c4;
-  --green: #43d9a3;
-  --red: #ff667c;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-}
-
-header {
-  padding: 22px 17px;
-  background: linear-gradient(135deg, #17264b, #101426, #26183e);
-  border-bottom: 1px solid #35405d;
-}
-
-.brand {
-  color: var(--gold);
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 6px;
-}
-
-.status {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 6px 10px;
-  border-radius: 20px;
-  background: #172f34;
-  color: var(--green);
-  font-size: 11px;
-}
-
-nav {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
-  overflow-x: auto;
-  background: #0c1224;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-}
-
-nav button {
-  flex-shrink: 0;
-  background: var(--panel);
-  color: var(--muted);
-  border: 1px solid #283654;
-  border-radius: 9px;
-  padding: 11px 13px;
-}
-
-nav button.active {
-  color: var(--gold);
-  border-color: var(--gold);
-}
-
-main {
-  max-width: 760px;
-  margin: auto;
-  padding: 16px;
-  padding-bottom: 50px;
-}
-
-h2 {
-  font-size: 21px;
-  margin-top: 8px;
-}
-
-h3 {
-  font-size: 15px;
-  margin-top: 0;
-}
-
-p, .muted {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-.card {
-  background: var(--panel);
-  border: 1px solid #263451;
-  border-radius: 15px;
-  padding: 16px;
-  margin: 14px 0;
-}
-
-.hero {
-  background: linear-gradient(135deg, #192a4b, #17162d);
-  border-color: #344364;
-}
-
-.big-time {
-  font-size: 37px;
-  font-weight: bold;
-  text-align: center;
-  color: var(--gold);
-  margin: 18px 0;
-  font-variant-numeric: tabular-nums;
-}
-
-.meter {
-  height: 8px;
-  background: #26324b;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 15px 0;
-}
-
-.meter-fill {
-  width: 0%;
-  height: 100%;
-  background: linear-gradient(90deg, #43d9a3, #e6c477, #ff667c);
-  transition: width .1s;
-}
-
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  align-items: center;
-}
-
-button, .file-label {
-  cursor: pointer;
-  font: inherit;
-}
-
-.btn {
-  background: var(--panel2);
-  color: var(--text);
-  border: 1px solid #354464;
-  border-radius: 10px;
-  padding: 12px 15px;
-}
-
-.btn.primary {
-  background: var(--gold);
-  color: #11172a;
-  border-color: var(--gold);
-  font-weight: bold;
-}
-
-.btn.record {
-  background: #451c31;
-  color: #ff9caf;
-  border-color: #883b54;
-}
-
-.btn:disabled {
-  opacity: .45;
-  cursor: not-allowed;
-}
-
-input[type="file"] {
-  display: none;
-}
-
-.file-label {
-  display: inline-block;
-  background: var(--panel2);
-  color: var(--gold);
-  border: 1px solid #354464;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 13px;
-}
-
-input[type="range"] {
-  width: 100%;
-  accent-color: var(--gold);
-  margin: 12px 0;
-}
-
-label {
-  font-size: 13px;
-}
-
-.track {
-  padding: 13px;
-  margin: 10px 0;
-  border: 1px solid #2a3856;
-  background: #0e1629;
-  border-radius: 10px;
-}
-
-.track strong {
-  color: var(--gold);
-  font-size: 13px;
-}
-
-.track audio, audio {
-  width: 100%;
-  margin-top: 10px;
-}
-
-.notice {
-  border-left: 3px solid var(--gold);
-  padding: 10px;
-  background: #171d30;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-.hidden {
-  display: none !important;
-}
-
-footer {
-  color: #6e7b99;
-  text-align: center;
-  padding: 20px;
-  font-size: 11px;
-}
+:root{--bg:#090d1d;--panel:#121a30;--panel2:#192541;--gold:#e6c477;--text:#f4f5fb;--muted:#9ba8c4;--green:#43d9a3;--red:#ff667c}
+*{box-sizing:border-box}
+html{min-height:100%;overflow-x:hidden;overflow-y:scroll;-webkit-overflow-scrolling:touch}
+body{margin:0;min-height:100vh;overflow-x:hidden;overflow-y:visible;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;touch-action:pan-y}
+header{padding:22px 17px;background:linear-gradient(135deg,#17264b,#101426,#26183e);border-bottom:1px solid #35405d}
+.brand{color:var(--gold);font-size:24px;font-weight:800;letter-spacing:1px}.subtitle{color:var(--muted);font-size:12px;margin-top:6px}
+.status{display:inline-block;margin-top:12px;padding:6px 10px;border-radius:20px;background:#172f34;color:var(--green);font-size:11px}
+nav{display:flex;gap:8px;padding:12px;overflow-x:auto;background:#0c1224;position:relative;z-index:5}
+nav button{flex-shrink:0;background:var(--panel);color:var(--muted);border:1px solid #283654;border-radius:9px;padding:11px 13px}
+nav button.active{color:var(--gold);border-color:var(--gold)}
+main{width:100%;max-width:760px;margin:0 auto;padding:16px;padding-bottom:60px}
+h2{font-size:21px;margin-top:8px}h3{font-size:15px;margin-top:0}
+p,.muted{color:var(--muted);font-size:13px;line-height:1.6}
+.card{background:var(--panel);border:1px solid #263451;border-radius:15px;padding:16px;margin:14px 0}
+.hero{background:linear-gradient(135deg,#192a4b,#17162d);border-color:#344364}
+.big-time{font-size:37px;font-weight:bold;text-align:center;color:var(--gold);margin:18px 0;font-variant-numeric:tabular-nums}
+.meter{height:8px;background:#26324b;border-radius:10px;overflow:hidden;margin:15px 0}.meter-fill{width:0%;height:100%;background:linear-gradient(90deg,#43d9a3,#e6c477,#ff667c);transition:width .1s}
+.row{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+button,.file-label{cursor:pointer;font:inherit}
+.btn{background:var(--panel2);color:var(--text);border:1px solid #354464;border-radius:10px;padding:12px 15px}
+.btn.primary{background:var(--gold);color:#11172a;border-color:var(--gold);font-weight:bold}
+.btn.record{background:#451c31;color:#ff9caf;border-color:#883b54}.btn:disabled{opacity:.45;cursor:not-allowed}
+input[type=file]{display:none}.file-label{display:inline-block;background:var(--panel2);color:var(--gold);border:1px solid #354464;padding:12px;border-radius:10px;font-size:13px}
+input[type=range]{width:100%;accent-color:var(--gold);margin:12px 0}
+label{font-size:13px}.track{padding:13px;margin:10px 0;border:1px solid #2a3856;background:#0e1629;border-radius:10px}
+.track strong{color:var(--gold);font-size:13px}.track audio,audio{width:100%;margin-top:10px}
+.notice{border-left:3px solid var(--gold);padding:10px;background:#171d30;color:var(--muted);font-size:12px;line-height:1.6}
+.hidden{display:none!important}footer{color:#6e7b99;text-align:center;padding:20px;font-size:11px}
 </style>
 </head>
-
 <body>
-
-<header>
-  <div class="brand">◉ HAVONA STUDIO</div>
-  <div class="subtitle">YOUR MUSIC. YOUR SOUND. YOUR STUDIO.</div>
-  <div class="status" id="appStatus">● STUDIO READY</div>
-</header>
-
+<header><div class="brand">◉ HAVONA STUDIO</div><div class="subtitle">YOUR MUSIC. YOUR SOUND. YOUR STUDIO.</div><div class="status" id="appStatus">● STUDIO READY</div></header>
 <nav>
-  <button class="active" data-page="record">🎙 Record</button>
-  <button data-page="tracks">🎚 Tracks</button>
-  <button data-page="mix">🎛 Mix</button>
-  <button data-page="ai">🤖 AI Tools</button>
-  <button data-page="admin">🔐 Admin</button>
+<button class="active" data-page="record">🎙 Record</button><button data-page="tracks">🎚 Tracks</button><button data-page="mix">🎛 Mix</button><button data-page="ai">🤖 AI Tools</button><button data-page="admin">🔐 Admin</button>
 </nav>
-
 <main>
-
 <section id="record" class="page">
-
-  <div class="card hero">
-    <h2>Recording Studio</h2>
-    <p>Record your voice and work with your instrumental.</p>
-
-    <div class="big-time" id="timer">00:00</div>
-
-    <div class="meter">
-      <div class="meter-fill" id="meterFill"></div>
-   
+<div class="card hero"><h2>Recording Studio</h2><p>Record your voice and work with your instrumental.</p><div class="big-time" id="timer">00:00</div><div class="meter"><div class="meter-fill" id="meterFill"></div></div><div class="row"><button class="btn" id="micButton">Enable Microphone</button><button class="btn record" id="recordButton" disabled>● Record</button><button class="btn" id="stopButton" disabled>■ Stop</button></div><p id="micStatus">Microphone is not enabled.</p></div>
+<div class="card"><h3>🎵 Your Instrumental</h3><p>Choose a beat or instrumental stored on your phone.</p><label class="file-label">Choose Instrumental<input type="file" id="beatFile" accept="audio/*"></label><div id="beatInfo" class="muted">No instrumental selected.</div><audio id="beatPlayer" controls></audio><label>Instrumental Volume<input type="range" id="beatVolume" min="0" max="100" value="75"></label></div>
+<div class="card"><h3>🎧 Voice Monitoring</h3><label>Microphone Monitoring Volume<input type="range" id="monitorVolume" min="0" max="100" value="50"></label><button class="btn" id="monitorButton">Enable Voice Monitoring</button><p id="monitorStatus">Monitoring is off. Headphones are recommended.</p><div class="notice">Live monitoring can produce an echo or delay on some phones. Use wired headphones where possible. Do not use speakers while monitoring your microphone, as this may cause feedback.</div></div>
+<div class="card"><h3>🎤 Recorded Takes</h3><div id="recordings"><p>Your recordings will appear here.</p></div></div>
+</section>
+<section id="tracks" class="page hidden"><h2>Multitrack Workspace</h2><p>Organize your vocal takes and instrumentals.</p><div class="card"><h3>Track Categories</h3><div class="track"><strong>01 — Lead Vocals</strong><p>Your main vocal performance.</p></div><div class="track"><strong>02 — Backing Vocals</strong><p>Backing responses and supporting vocals.</p></div><div class="track"><strong>03 — Harmonies</strong><p>Additional vocal harmonies.</p></div><div class="track"><strong>04 — Ad-libs</strong><p>Extra vocal expressions and fills.</p></div><div class="notice">These are track categories only. A synchronized multitrack recorder still needs to be implemented.</div></div></section>
+<section id="mix" class="page hidden"><h2>Mix &amp; Master</h2><p>Basic audio controls for your recording workflow.</p><div class="card"><h3>🎚 Vocal Level</h3><label>Vocal Playback Volume</label><input type="range" id="vocalVolume" min="0" max="100" value="100"><p id="vocalLevel">100%</p></div><div class="card"><h3>✨ Reverb</h3><label>Reverb Amount</label><input type="range" id="reverbAmount" min="0" max="100" value="0"><p id="reverbValue">0%</p><p>The full recording effects engine will be added in a later stage.</p></div><div class="card"><h3>🎛 Production Tools</h3><div class="track">Equalizer — planned</div><div class="track">Compression — planned</div><div class="track">Pitch Correction / Autotune — planned</div><div class="track">Delay and Vocal Doubling — planned</div><div class="track">Master Limiter and Loudness Meter — planned</div></div></section>
+<section id="ai" class="page hidden"><h2>AI Music Tools</h2><p>Tools planned for Havona Studio.</p><div class="card"><h3>🤖 AI Vocal Separator</h3><p>Separate vocals from instrumentals, with further development for lead and backing-vocal separation.</p><button class="btn" disabled>Coming in a Later Stage</button></div><div class="card"><h3>🎧 Mix Clone AI</h3><p>Analyze a reference track and help match its tonal balance, dynamics, vocal presence, and overall mix character.</p><button class="btn" disabled>Coming in a Later Stage</button></div><div class="card"><h3>✨ AI Mastering</h3><p>Prepare your mix for final loudness and tonal-balance adjustments.</p><button class="btn" disabled>Coming in a Later Stage</button></div><div class="notice">These AI tools are not operational yet. We'll implement them separately and prioritize free or locally runnable solutions.</div></section>
+<section id="admin" class="page hidden"><h2>Owner Administration</h2><div class="card"><h3>🔐 Personal Admin Login</h3><p>Your private administrator account will be connected through Supabase authentication after we create the separate backend.</p><div class="notice">This screen does not authenticate users or protect administrative resources yet. Do not enter a password here.</div></div><div class="card"><h3>Studio Information</h3><p>Application: Havona Studio</p><p>Version: 0.1.1</p><p>Mode: Initial development</p><p>Target: Android-first</p></div></section>
+</main><footer>HAVONA STUDIO · BUILT FOR MUSIC CREATORS</footer>
+<script>
+const $=id=>document.getElementById(id);let audioStream=null,mediaRecorder=null,audioChunks=[],recordingStart=0,timerInterval=null,audioContext=null,micSource=null,monitorGain=null,analyser=null,monitorEnabled=false,recordingUrls=[],beatUrl=null;
+function setStatus(message){$("appStatus").textContent="● "+message}
+document.querySelectorAll("nav button").forEach(button=>button.addEventListener("click",()=>{document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));button.classList.add("active");document.querySelectorAll(".page").forEach(page=>page.classList.add("hidden"));$(button.dataset.page).classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"})}));
+function formatTime(seconds){return String(Math.floor(seconds/60)).padStart(2,"0")+":"+String(Math.floor(seconds%60)).padStart(2,"0")}
+function updateTimer(){$("timer").textContent=formatTime((Date.now()-recordingStart)/1000)}
+$("micButton").addEventListener("click",async()=>{try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw Error("Microphone needs a supported secure HTTPS page. Open the published website in Chrome.");audioStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}});audioContext=new(window.AudioContext||window.webkitAudioContext)();if(audioContext.state==="suspended")await audioContext.resume();micSource=audioContext.createMediaStreamSource(audioStream);analyser=audioContext.createAnalyser();analyser.fftSize=256;micSource.connect(analyser);monitorGain=audioContext.createGain();monitorGain.gain.value=0;micSource.connect(monitorGain);monitorGain.connect(audioContext.destination);$("micStatus").textContent="Microphone enabled.";$("recordButton").disabled=false;$("micButton").textContent="Microphone Enabled";setStatus("MICROPHONE READY");drawMeter()}catch(error){$("micStatus").textContent=error.message||"Could not enable microphone.";setStatus("MICROPHONE UNAVAILABLE")}});
+function drawMeter(){if(!analyser)return;const data=new Uint8Array(analyser.frequencyBinCount);function draw(){if(!analyser)return;analyser.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const value=(data[i]-128)/128;sum+=value*value}const rms=Math.sqrt(sum/data.length);$("meterFill").style.width=Math.min(100,rms*250)+"%";requestAnimationFrame(draw)}draw()}
+$("beatFile").addEventListener("change",event=>{const file=event.target.files[0];if(!file)return;if(beatUrl)URL.revokeObjectURL(beatUrl);beatUrl=URL.createObjectURL(file);$("beatPlayer").src=beatUrl;$("beatInfo").textContent=file.name;$("beatPlayer").volume=Number($("beatVolume").value)/100;setStatus("INSTRUMENTAL LOADED")});
+$("beatVolume").addEventListener("input",event=>$("beatPlayer").volume=Number(event.target.value)/100);
+$("monitorButton").addEventListener("click",async()=>{if(!audioContext||!monitorGain){$("monitorStatus").textContent="Enable the microphone first.";return}try{if(audioContext.state==="suspended")await audioContext.resume();monitorEnabled=!monitorEnabled;monitorGain.gain.value=monitorEnabled?Number($("monitorVolume").value)/100:0;$("monitorButton").textContent=monitorEnabled?"Disable Voice Monitoring":"Enable Voice Monitoring";$("monitorStatus").textContent=monitorEnabled?"Monitoring enabled. Use headphones.":"Monitoring is off."}catch(error){$("monitorStatus").textContent="Could not enable monitoring."}});
+$("monitorVolume").addEventListener("input",event=>{if(monitorGain&&monitorEnabled)monitorGain.gain.value=Number(event.target.value)/100});
+$("recordButton").addEventListener("click",async()=>{if(!audioStream)return;if(audioContext&&audioContext.state==="suspended")await audioContext.resume();audioChunks=[];const candidates=["audio/webm;codecs=opus","audio/mp4","audio/webm"];const mimeType=window.MediaRecorder&&MediaRecorder.isTypeSupported?candidates.find(type=>MediaRecorder.isTypeSupported(type))||"":"";try{mediaRecorder=mimeType?new MediaRecorder(audioStream,{mimeType}):new MediaRecorder(audioStream);mediaRecorder.ondataavailable=event=>{if(event.data&&event.data.size>0)audioChunks.push(event.data)};mediaRecorder.onstop=saveRecording;mediaRecorder.start(250);recordingStart=Date.now();timerInterval=setInterval(updateTimer,250);$("recordButton").disabled=true;$("stopButton").disabled=false;if($("beatPlayer").src){$("beatPlayer").currentTime=0;$("beatPlayer").play().catch(()=>{})}setStatus("RECORDING")}catch(error){$("micStatus").textContent="Recording could not start: "+error.message}});
+$("stopButton").addEventListener("click",()=>{if(mediaRecorder&&mediaRecorder.state!=="inactive")mediaRecorder.stop();$("beatPlayer").pause();clearInterval(timerInterval);$("recordButton").disabled=false;$("stopButton").disabled=true;setStatus("RECORDING STOPPED")});
+function saveRecording(){const type=mediaRecorder.mimeType||"audio/webm";const blob=new Blob(audioChunks,{type});const url=URL.createObjectURL(blob);recordingUrls.push(url);const extension=type.includes("mp4")?"m4a":"webm";const filename="Havona_Take_"+new Date().toISOString().replace(/[:.]/g,"-")+"."+extension;const recordings=$("recordings");if(recordings.querySelector("p"))recordings.innerHTML="";const item=document.createElement("div");item.className="track";const title=document.createElement("strong");title.textContent=filename;const player=document.createElement("audio");player.controls=true;player.src=url;const download=document.createElement("a");download.href=url;download.download=filename;download.textContent="Download Recording";download.style.cssText="display:inline-block;margin-top:12px;color:#e6c477;font-size:13px";item.append(title,player,download);recordings.prepend(item);setStatus("TAKE SAVED")}
+$("vocalVolume").addEventListener("input",event=>$("vocalLevel").textContent=event.target.value+"%");
+$("reverbAmount").addEventListener("input",event=>$("reverbValue").textContent=event.target.value+"%");
+window.addEventListener("pagehide",()=>{recordingUrls.forEach(url=>URL.revokeObjectURL(url));if(beatUrl)URL.revokeObjectURL(beatUrl);if(audioStream)audioStream.getTracks().forEach(track=>track.stop())});
+</script>
+</body></html>
