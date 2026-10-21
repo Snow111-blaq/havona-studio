@@ -69,7 +69,13 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:0 18px 28px}
   </div>
 
   <div class="card">
-    <h2>2. Vocal recording</h2>
+    <div class="row">
+  <label for="vocalType"><strong>Recording type:</strong></label>
+  <select id="vocalType">
+    <option value="Lead Vocal">Lead Vocal</option>
+    <option value="Backing Vocal">Backing Vocal</option>
+  </select>
+    </div>
     <p class="muted">Allow microphone access when your browser asks. For best results, use wired headphones to avoid the beat leaking into your microphone.</p>
     <div class="row">
       <button id="micBtn" class="secondary">Enable microphone</button>
