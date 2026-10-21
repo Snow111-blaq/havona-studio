@@ -5,16 +5,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090d1d">
 <title>Havona Studio</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#090d1d;color:#f5f4f0;font-family:Arial,sans-serif}
-header,main{max-width:800px;margin:auto;padding:20px}
-header{background:linear-gradient(130deg,#17264b,#101426,#26183e)}
-h1{color:#e6c477;margin-bottom:5px}
+header{padding:22px;background:linear-gradient(135deg,#17264b,#101426,#26183e)}
+header,main{max-width:850px;margin:auto}
+h1{color:#e6c477;margin:8px 0}
 h2{font-size:19px}
-p{color:#aab4cc;line-height:1.5;font-size:14px}
+p{color:#aab4cc;font-size:14px;line-height:1.6}
+main{padding:16px}
 .card{background:#121a30;border:1px solid #2b3859;border-radius:16px;padding:17px;margin-bottom:15px}
-button,.filebtn,select{border:0;border-radius:10px;padding:13px;margin:4px 2px;font-weight:bold;font-size:14px}
+button,.filebtn,select{padding:13px;border:0;border-radius:10px;margin:4px 2px;font-size:14px;font-weight:bold}
 button,.filebtn{cursor:pointer}
 .primary,.filebtn{background:#e6c477;color:#171525}
 .secondary{background:#263654;color:white}
@@ -23,118 +25,19 @@ button:disabled{opacity:.45}
 input[type=file]{display:none}
 audio{width:100%;margin-top:12px}
 input[type=range]{width:100%;accent-color:#e6c477}
-.status{padding:12px;background:#090d1d;border:1px solid #2b3859;border-radius:10px;font-size:13px;line-height:1.5;margin-top:10px;overflow-wrap:anywhere}
-.track{background:#090d1d;border:1px solid #2b3859;border-radius:12px;padding:12px;margin-top:12px}
-.badge{font-size:11px;color:#e6c477}
-.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 16px}
+select{background:#263654;color:white}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:12px}
 .tabs button{background:#172342;color:white;flex-shrink:0}
 .tabs button.active{background:#e6c477;color:#171525}
+.status{padding:12px;background:#090d1d;border:1px solid #2b3859;border-radius:10px;margin-top:12px;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.track{background:#090d1d;border:1px solid #2b3859;border-radius:12px;padding:12px;margin-top:12px}
 .hidden{display:none!important}
 </style>
 </head>
+
 <body>
 
 <header>
-<div style="color:#e6c477;font-size:12px;letter-spacing:3px">YOUR PERSONAL MUSIC STUDIO</div>
+<div style="font-size:12px;letter-spacing:3px;color:#e6c477">YOUR PERSONAL MUSIC STUDIO</div>
 <h1>Havona Studio</h1>
-<p>Record vocals • Mix beats • Download your music</p>
-</header>
-
-<div class="tabs">
-<button class="active" data-tab="record">🎙️ Record</button>
-<button data-tab="tracks">🎚️ Tracks</button>
-<button data-tab="mix">🎛️ Mix</button>
-</div>
-
-<main>
-<section id="record" class="tab">
-
-<div class="card">
-<h2>1. Upload your instrumental</h2>
-<label class="filebtn" for="beatFile">Choose Instrumental</label>
-<input id="beatFile" type="file" accept="audio/*">
-<p id="beatName">No instrumental selected.</p>
-<audio id="beatPlayer" controls></audio>
-</div>
-
-<div class="card">
-<h2>2. Record vocals + beat</h2>
-<p>Connect headphones before recording. Press Record to start the beat from the beginning and capture both sounds together.</p>
-
-<label for="vocalType">Vocal type:</label>
-<select id="vocalType">
-<option>Lead Vocal</option>
-<option>Backing Vocal</option>
-</select>
-
-<div style="margin-top:12px">
-<button id="micBtn" class="secondary">Enable Microphone</button>
-<button id="recordBtn" class="primary" disabled>● Record</button>
-<button id="stopBtn" class="danger" disabled>■ Stop</button>
-</div>
-
-<div id="status" class="status">Upload a beat and enable your microphone.</div>
-</div>
-
-<div class="card">
-<h2>3. Live microphone monitoring</h2>
-<button id="monitorBtn" class="secondary" disabled>Turn Monitoring On</button>
-<p>Monitoring volume: <strong id="gainText">35%</strong></p>
-<input id="monitorGain" type="range" min="0" max="100" value="35">
-<div id="monitorStatus" class="status">Monitoring is off. Use headphones.</div>
-</div>
-
-</section>
-
-<section id="tracks" class="tab hidden">
-<div class="card">
-<h2>Your recordings</h2>
-<div id="recordings">Your recordings will appear here.</div>
-</div>
-</section>
-
-<section id="mix" class="tab hidden">
-<div class="card">
-<h2>Havona Mixing Workspace</h2>
-<p>The current version records the beat and vocals together. EQ, compression, reverb, delay, and reference-mix cloning are future upgrades.</p>
-</div>
-</section>
-</main>
-
-<script>
-const $=id=>document.getElementById(id);
-
-let micStream=null;
-let audioCtx=null;
-let beatSource=null;
-let micSource=null;
-let beatGain=null;
-let vocalGain=null;
-let monitorGain=null;
-let destination=null;
-let recorder=null;
-let vocalRecorder=null;
-let mixChunks=[];
-let vocalChunks=[];
-let recordings=[];
-let beatURL=null;
-let monitoring=false;
-let recording=false;
-let busy=false;
-let count=0;
-
-document.querySelectorAll('[data-tab]').forEach(button=>{
-button.addEventListener('click',()=>{
-document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b===button));
-document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('hidden',s.id!==button.dataset.tab));
-});
-});
-
-function message(text,warning=false){
-$('status').textContent=text;
-$('status').style.color=warning?'#ffce85':'#f5f4f0';
-}
-
-$('beatFile').addEventListener('change',()=>{
-const file=$('beatFile').files[0];
-if(!file
+<p>Record vocals • Mix beats • Download your music
